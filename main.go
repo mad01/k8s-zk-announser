@@ -49,7 +49,7 @@ type serviceController struct {
 	serviceLister lister_v1.ServiceLister
 }
 
-func newServiceController(client kubernetes.Interface, namespace string) *serviceController {
+func newServiceController(client kubernetes.Interface, namespace string, updateInterval time.Duration) *serviceController {
 	sc := &serviceController{
 		client: client,
 		queue:  workqueue.NewRateLimitingQueue(workqueue.DefaultControllerRateLimiter()),
@@ -71,8 +71,7 @@ func newServiceController(client kubernetes.Interface, namespace string) *servic
 		// Every object will trigger the `Updatefunc` even if there have been no actual updates triggered.
 		// In some cases you can set this to a very high interval - as you can assume you will see periodic
 		// updates in normal operation.
-		// The interval is set low here for demo purposes.
-		10*time.Second,
+		updateInterval,
 		// Callback Functions to trigger on add/update/delete
 		cache.ResourceEventHandlerFuncs{
 			AddFunc: func(obj interface{}) {
@@ -204,7 +203,7 @@ func main() {
 	stopCh := make(chan struct{})
 	defer close(stopCh)
 
-	controller := newServiceController(client, metav1.NamespaceAll)
+	controller := newServiceController(client, metav1.NamespaceAll, 10*time.Second)
 	controller.Run(stopCh)
 
 }
