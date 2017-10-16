@@ -1,4 +1,4 @@
-FROM golang:1.8.4-alpine as builder
+FROM golang:1.8.4-jessie as builder
 ENV buildpath=/usr/local/go/src/build/k8s-zk-announser
 ARG build=notSet
 RUN mkdir -p $buildpath
