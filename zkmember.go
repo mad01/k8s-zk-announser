@@ -31,6 +31,17 @@ import (
 //  "shard": 0
 //}
 
+// possible endpoint statuses. Currently only concerned with ALIVE.
+const (
+	statusDead     = "DEAD"
+	statusStarting = "STARTING"
+	statusAlive    = "ALIVE"
+	statusStopping = "STOPPING"
+	statusStopped  = "STOPPED"
+	statusWarning  = "WARNING"
+	statusUnknown  = "UNKNOWN"
+)
+
 type zkMemberUnite struct {
 	Host string `json:"host"`
 	Port int    `json:"port"`
@@ -55,6 +66,7 @@ type zkMember struct {
 func (z *zkMember) Init() {
 	z.AdditionalEndpoints = make(Endpoints)
 	z.ServiceEndpoint = make(Endpoints)
+	z.Status = statusAlive
 }
 
 func (z *zkMember) addAdditionalEndpoints(name string, unit zkMemberUnite) {

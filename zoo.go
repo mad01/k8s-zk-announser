@@ -13,17 +13,6 @@ var (
 	defaultBasePath = "/aurora/jobs"
 )
 
-// possible endpoint statuses. Currently only concerned with ALIVE.
-const (
-	statusDead     = "DEAD"
-	statusStarting = "STARTING"
-	statusAlive    = "ALIVE"
-	statusStopping = "STOPPING"
-	statusStopped  = "STOPPED"
-	statusWarning  = "WARNING"
-	statusUnknown  = "UNKNOWN"
-)
-
 // Zoo zookeeper main struct
 type Zoo struct {
 	conn *zk.Conn
