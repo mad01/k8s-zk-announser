@@ -176,16 +176,7 @@ func (c *serviceController) handleErr(err error, key interface{}) {
 	}
 
 	c.queue.Forget(key)
-	glog.Errorf("Dropping node %q out of the queue: %v", key, err)
-}
-
-func getK8sServerVersion(client *kubernetes.Clientset) (string, error) {
-	var err error
-	if version, err := client.ServerVersion(); err == nil {
-		return version.String(), nil
-	}
-	return "", err
-
+	glog.Errorf("Dropping %q out of the queue: %v", key, err)
 }
 
 func main() {
@@ -197,7 +188,7 @@ func main() {
 
 	client, err := k8sGetClient(kubeconfig)
 	if err != nil {
-		glog.Error(fmt.Errorf("Failed to get clinet: %v", err))
+		glog.Error(fmt.Errorf("Failed to get client: %v", err))
 	}
 
 	stopCh := make(chan struct{})
