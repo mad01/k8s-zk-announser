@@ -63,12 +63,6 @@ type zkMember struct {
 	Shard               int       `json:"shard"`
 }
 
-func (z *zkMember) Init() {
-	z.AdditionalEndpoints = make(Endpoints)
-	z.ServiceEndpoint = make(Endpoints)
-	z.Status = statusAlive
-}
-
 func (z *zkMember) addAdditionalEndpoints(name string, unit zkMemberUnite) {
 	z.AdditionalEndpoints[name] = unit
 }
@@ -103,7 +97,10 @@ func (z *zkMember) anyEndpoints() bool {
 
 // newZLKMember returns instance of new member
 func newZKMember() *zkMember {
-	var member zkMember
-	member.Init()
+	member := zkMember{
+		AdditionalEndpoints: make(Endpoints),
+		ServiceEndpoint:     make(Endpoints),
+		Status:              statusAlive,
+	}
 	return &member
 }
