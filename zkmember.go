@@ -39,7 +39,7 @@ type zkMemberUnite struct {
 	Port int    `json:"port"`
 }
 
-// Endpoints for zk members
+// Endpoints for zookeeper members
 type Endpoints map[string]zkMemberUnite
 
 type zkMember struct {
