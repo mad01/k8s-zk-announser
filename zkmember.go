@@ -52,12 +52,12 @@ type zkMember struct {
 	Shard               int       `json:"shard"`
 }
 
-func (z *zkMember) addAdditionalEndpoints(name string, unit zkMemberUnite) {
-	z.AdditionalEndpoints[name] = unit
+func (z *zkMember) addAdditionalEndpoints(name, addr string, port int) {
+	z.AdditionalEndpoints[name] = zkMemberUnite{Host: addr, Port: port}
 }
 
-func (z *zkMember) addServiceEndpoint(name string, unit zkMemberUnite) {
-	z.ServiceEndpoint[name] = unit
+func (z *zkMember) addServiceEndpoint(name, addr string, port int) {
+	z.ServiceEndpoint[name] = zkMemberUnite{Host: addr, Port: port}
 }
 
 func (z *zkMember) marshalJSON() ([]byte, error) {
