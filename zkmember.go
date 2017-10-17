@@ -43,12 +43,9 @@ type zkMemberUnite struct {
 type Endpoints map[string]zkMemberUnite
 
 type zkMember struct {
-	serviceName string
-	role        string // game/title
-	env         string // prod/int/test/stage
-	path        string // zk path
+	name string
+	path string // zookeeper path
 
-	zkBasePath          string
 	Status              string    `json:"status"` // set to ALIVE
 	AdditionalEndpoints Endpoints `json:"additionalEndpoints"`
 	ServiceEndpoint     Endpoints `json:"serviceEndpoint"`
