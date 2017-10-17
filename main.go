@@ -13,8 +13,10 @@ import (
 func main() {
 	var kubeconfig string
 	var debug bool
+	var zookeeperAddr string
 
 	flag.StringVar(&kubeconfig, "kubeconfig", "", "Path to a kubeconfig file")
+	flag.StringVar(&zookeeperAddr, "zookeeper.addr", "localhost:2181", "zookeeper address:port")
 	flag.BoolVar(&debug, "debug", false, "debug logging")
 	flag.Set("logtostderr", "true")
 	flag.Parse()
@@ -29,7 +31,7 @@ func main() {
 	stopCh := make(chan struct{})
 	defer close(stopCh)
 
-	controller := newServiceController(client, metav1.NamespaceAll, 10*time.Second)
+	controller := newServiceController(client, metav1.NamespaceAll, 200*time.Second, zookeeperAddr)
 	controller.Run(stopCh)
 
 }
