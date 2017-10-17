@@ -40,7 +40,7 @@ type UpdaterEvent struct {
 
 func newUpdater() *Updater {
 	updater := Updater{
-		events: make(chan UpdaterEvent, 100),
+		events: make(chan UpdaterEvent),
 	}
 	return &updater
 }
