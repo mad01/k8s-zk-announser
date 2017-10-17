@@ -23,7 +23,7 @@ kind: Service
 metadata:
   name: nginx
   annotations:
-    zookeeper/path: "/aurora/job/role/prod/service/"
+    zookeeper/path: "/aurora/job/role/prod/service"
 spec:
   ports:
     - port: 80
