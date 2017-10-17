@@ -51,14 +51,13 @@ type Updater struct {
 }
 
 // Run starts to wait for events and executes them
-func (u *Updater) Run(events chan UpdaterEvent, stopCh chan struct{}) {
+func (u *Updater) Run(stopCh chan struct{}) {
 	for {
 		select {
-		case event := <-events:
-			log.Infof("process event: %v", event.eventType)
-			fmt.Println("act on event")
+		case event := <-u.events:
+			log.Infof("process event: %v service: %v", event.eventType, event.member.name)
 		case _ = <-stopCh:
-			fmt.Println("stopping updater runner")
+			log.Info("stopping updater runner")
 			return
 		}
 	}
