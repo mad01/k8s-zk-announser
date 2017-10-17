@@ -12,12 +12,14 @@ import (
 
 func main() {
 	var kubeconfig string
+	var debug bool
 
 	flag.StringVar(&kubeconfig, "kubeconfig", "", "Path to a kubeconfig file")
+	flag.BoolVar(&debug, "debug", false, "debug logging")
 	flag.Set("logtostderr", "true")
 	flag.Parse()
 
-	LogInit(false)
+	LogInit(debug)
 
 	client, err := k8sGetClient(kubeconfig)
 	if err != nil {
