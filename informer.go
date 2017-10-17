@@ -44,11 +44,11 @@ type serviceController struct {
 	updater       *Updater
 }
 
-func newServiceController(client kubernetes.Interface, namespace string, updateInterval time.Duration) *serviceController {
+func newServiceController(client kubernetes.Interface, namespace string, updateInterval time.Duration, zookeeperAddr string) *serviceController {
 	sc := &serviceController{
 		client: client,
 	}
-	sc.updater = newUpdater()
+	sc.updater = newUpdater(zookeeperAddr)
 
 	indexer, informer := cache.NewIndexerInformer(
 		&cache.ListWatch{
