@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"path"
 	"time"
 
@@ -96,4 +97,13 @@ func (z *Zoo) AddServiceMember(member *zkMember) (string, error) {
 	}
 	log.Infof("added service member: %s with path: %s", member.name, member.path)
 	return respPath, nil
+}
+
+// DeleteServiceMember delete member
+func (z *Zoo) DeleteServiceMember(member *zkMember) error {
+	err := z.conn.Delete(member.path, 0)
+	if err != nil {
+		return fmt.Errorf("failed to delete service member in path %v err: %v", member.path, err.Error())
+	}
+	return nil
 }
