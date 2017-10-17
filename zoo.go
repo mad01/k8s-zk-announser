@@ -9,8 +9,7 @@ import (
 )
 
 var (
-	memberPrefix    = "member_"
-	defaultBasePath = "/aurora/jobs"
+	memberPrefix = "member_"
 )
 
 // Zoo zookeeper main struct
