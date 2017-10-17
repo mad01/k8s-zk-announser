@@ -62,10 +62,6 @@ func newServiceController(client kubernetes.Interface, namespace string, updateI
 		},
 		// The types of objects this informer will return
 		&v1.Service{},
-		// The resync period of this object. This will force a re-queue of all cached objects at this interval.
-		// Every object will trigger the `Updatefunc` even if there have been no actual updates triggered.
-		// In some cases you can set this to a very high interval - as you can assume you will see periodic
-		// updates in normal operation.
 		updateInterval,
 		// Callback Functions to trigger on add/update/delete
 		cache.ResourceEventHandlerFuncs{
