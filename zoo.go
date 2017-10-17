@@ -20,7 +20,7 @@ type Zoo struct {
 // Conn (connect to zookeeper)
 func (z *Zoo) Conn(server string) error {
 	log.Infof("connecting to zk %v", server)
-	c, _, err := zk.Connect([]string{server}, time.Second) //*10)
+	c, _, err := zk.Connect([]string{server}, 10*time.Second) //*10)
 	if err != nil {
 		return err
 	}
@@ -77,9 +77,12 @@ func (z *Zoo) AddServiceMember(member *zkMember) (string, error) {
 		return "", err
 	}
 
+	// TODO: change to set 0 to something else to support multiple
+	path := fmt.Sprintf("%s/%s%s", member.path, memberPrefix, "0")
+
 	log.Debugf("trying to add service member with path: %s", member.path)
 	respPath, err := z.conn.Create(
-		member.path,
+		path,
 		memberData,
 		1,
 		zk.WorldACL(zk.PermAll),
