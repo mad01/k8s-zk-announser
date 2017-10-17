@@ -17,6 +17,7 @@ const (
 func newUpdaterEvent(eventType string, service *v1.Service) (*UpdaterEvent, error) {
 	member := newZKMember()
 	member.name = service.GetName()
+	member.prefix = service.GetResourceVersion()
 
 	annotations := service.GetAnnotations()
 	if path, ok := annotations[serviceAnnotation]; ok {

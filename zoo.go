@@ -78,8 +78,7 @@ func (z *Zoo) AddServiceMember(member *zkMember) (string, error) {
 		return "", err
 	}
 
-	// TODO: change to set 0 to something else to support multiple
-	path := fmt.Sprintf("%s/%s%s", member.path, memberPrefix, "0")
+	path := fmt.Sprintf("%s/%s%s", member.path, memberPrefix, member.prefix)
 
 	log.Debugf("trying to add service member with path: %s", member.path)
 	respPath, err := z.conn.Create(
