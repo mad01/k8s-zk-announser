@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/golang/glog"
+	log "github.com/sirupsen/logrus"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -23,7 +23,7 @@ func main() {
 
 	client, err := k8sGetClient(kubeconfig)
 	if err != nil {
-		glog.Error(fmt.Errorf("Failed to get client: %v", err))
+		log.Error(fmt.Errorf("Failed to get client: %v", err))
 	}
 
 	stopCh := make(chan struct{})
