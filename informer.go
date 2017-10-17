@@ -98,7 +98,7 @@ func newServiceController(client kubernetes.Interface, namespace string, updateI
 				if key, err := cache.DeletionHandlingMetaNamespaceKeyFunc(obj); err == nil {
 					log.Debugf("deleteFunc key: %v", key)
 					service := obj.(*v1.Service)
-					event, err := newUpdaterEvent(eventUpdate, service)
+					event, err := newUpdaterEvent(eventDelete, service)
 					if err != nil {
 						log.Debugf("failed to generate new updater event: %v", err.Error())
 					} else {
