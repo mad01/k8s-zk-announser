@@ -4,17 +4,9 @@ import (
 	"encoding/json"
 )
 
-// {
+//{
 //  "status": "ALIVE",
 //  "additionalEndpoints": {
-//    "admin": {
-//      "host": "10.19.64.35",
-//      "port": 10764
-//    },
-//    "websocket": {
-//      "host": "10.19.64.35",
-//      "port": 10691
-//    },
 //    "health": {
 //      "host": "10.19.64.35",
 //      "port": 10764
