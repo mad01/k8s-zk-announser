@@ -91,6 +91,6 @@ func (z *Zoo) AddServiceMember(member *zkMember) (string, error) {
 		log.Errorf("failed to create service member in path: %s  err: %s ", member.path, err.Error())
 		return "", err
 	}
-	log.Infof("added service member: %s with path: %s", member.serviceName, member.path)
+	log.Infof("added service member: %s with path: %s", member.name, member.path)
 	return respPath, nil
 }
