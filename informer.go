@@ -81,12 +81,16 @@ func newServiceController(client kubernetes.Interface, namespace string, updateI
 			UpdateFunc: func(old, new interface{}) {
 				if key, err := cache.MetaNamespaceKeyFunc(new); err == nil {
 					log.Debugf("updateFunc key: %v", key)
-					service := new.(*v1.Service) // TODO: do we need to do a diff on old/new?
-					event, err := newUpdaterEvent(eventUpdate, service)
-					if err != nil {
-						log.Debugf("failed to generate new updater event: %v", err.Error())
-					} else {
-						sc.updater.events <- *event
+					newService := new.(*v1.Service)
+					oldService := old.(*v1.Service)
+
+					if newService.ResourceVersion != oldService.ResourceVersion {
+						event, err := newUpdaterEvent(eventUpdate, newService)
+						if err != nil {
+							log.Debugf("failed to generate new updater event: %v", err.Error())
+						} else {
+							sc.updater.events <- *event
+						}
 					}
 				}
 			},
