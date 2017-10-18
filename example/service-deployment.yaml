@@ -23,10 +23,14 @@ kind: Service
 metadata:
   name: nginx
   annotations:
-    zookeeper/path: "/aurora/job/role/prod/service"
+    service.announser/zookeeper-path: "/aurora/job/role/prod/service"
+    service.announser/portname: http
 spec:
   ports:
-    - port: 80
+    - name: http
+      protocol: TCP
+      port: 80
       targetPort: 80
   selector:
     app: nginx
+  type: LoadBalancer
