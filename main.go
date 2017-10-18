@@ -14,9 +14,11 @@ func main() {
 	var kubeconfig string
 	var debug bool
 	var zookeeperAddr string
+	var updateInterval time.Duration
 
 	flag.StringVar(&kubeconfig, "kubeconfig", "", "Path to a kubeconfig file")
 	flag.StringVar(&zookeeperAddr, "zookeeper.addr", "localhost:2181", "zookeeper address:port")
+	flag.DurationVar(&updateInterval, "interval", 10*time.Second, "interavl to update the informer cache")
 	flag.BoolVar(&debug, "debug", false, "debug logging")
 	flag.Set("logtostderr", "true")
 	flag.Parse()
@@ -31,7 +33,7 @@ func main() {
 	stopCh := make(chan struct{})
 	defer close(stopCh)
 
-	controller := newServiceController(client, metav1.NamespaceAll, 200*time.Second, zookeeperAddr)
+	controller := newServiceController(client, metav1.NamespaceAll, updateInterval, zookeeperAddr)
 	controller.Run(stopCh)
 
 }
