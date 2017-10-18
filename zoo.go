@@ -15,18 +15,22 @@ var (
 
 // Zoo zookeeper main struct
 type Zoo struct {
-	conn *zk.Conn
+	conn   *zk.Conn
+	active *activeMembers
+}
+
+// Init the active memebers map
+func (z *Zoo) Init() {
+	z.active = newActiveMembers()
 }
 
 // Conn (connect to zookeeper)
 func (z *Zoo) Conn(server string) error {
-	log.Infof("connecting to zk %v", server)
 	c, _, err := zk.Connect([]string{server}, 10*time.Second) //*10)
 	if err != nil {
 		return err
 	}
 	z.conn = c
-	log.Info("connected to zk %v", server)
 	return nil
 }
 
@@ -67,42 +71,55 @@ func (z *Zoo) createFullPath(path string) error {
 }
 
 // AddServiceMember add new zk member
-func (z *Zoo) AddServiceMember(member *zkMember) (string, error) {
+func (z *Zoo) AddServiceMember(member *zkMember) error {
+	if !member.anyEndpoints() {
+		return fmt.Errorf("failed to add no service endpoints")
+	}
+	if z.active.keyIn(member.name) {
+		return fmt.Errorf("will not add member exists in zk")
+	}
 	err := z.createFullPath(member.path)
 	if err != nil {
-		return "", err
+		return err
 	}
 
 	memberData, err := member.marshalJSON()
 	if err != nil {
-		return "", err
+		return err
 	}
 
-	path := fmt.Sprintf("%s/%s%s", member.path, memberPrefix, member.prefix)
+	path := fmt.Sprintf("%s/%s", member.path, memberPrefix)
 
 	log.Debugf("trying to add service member with path: %s", member.path)
 	respPath, err := z.conn.Create(
 		path,
 		memberData,
-		1,
+		zk.FlagEphemeral|zk.FlagSequence,
 		zk.WorldACL(zk.PermAll),
 	)
 
 	if err == zk.ErrNodeExists {
-		return respPath, nil
+		return nil
 	} else if err != nil {
 		log.Errorf("failed to create service member in path: %s  err: %s ", member.path, err.Error())
-		return "", err
+		return err
 	}
-	log.Infof("added service member: %s with path: %s", member.name, member.path)
-	return respPath, nil
+	log.Infof("added service member: %s with path: %s", member.name, respPath)
+	z.active.add(member.name, respPath)
+	return nil
 }
 
 // DeleteServiceMember delete member
 func (z *Zoo) DeleteServiceMember(member *zkMember) error {
-	err := z.conn.Delete(member.path, 0)
+	path := z.active.get(member.name)
+	if path == "" {
+		return fmt.Errorf("Missing path for service %v", member.name)
+	}
+	err := z.conn.Delete(path, 0)
 	if err != nil {
 		return fmt.Errorf("failed to delete service member in path %v err: %v", member.path, err.Error())
 	}
+	log.Infof("deleted member: %v", path)
+	z.active.delete(member.name)
 	return nil
 }
