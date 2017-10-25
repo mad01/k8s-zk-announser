@@ -1,0 +1,5 @@
+- add support for clusterIP
+    (should add cluster ip as the service endpoint)
+add support for clusterIP == None
+    (this will add a headless k8s service with just the lables/annotations
+    this should create one member for every pod)
