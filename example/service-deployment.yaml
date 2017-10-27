@@ -25,6 +25,7 @@ metadata:
   annotations:
     service.announser/zookeeper-path: "/aurora/job/role/prod/service"
     service.announser/portname: http
+    service.beta.kubernetes.io/aws-load-balancer-internal: 0.0.0.0/0
 spec:
   ports:
     - name: http
