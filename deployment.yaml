@@ -2,6 +2,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
+  namespace: default
   name: zk-announser
 spec:
   replicas: 1
@@ -10,6 +11,7 @@ spec:
       labels:
         app: zk-announser
     spec:
+      serviceAccount: zk-announser
       containers:
         - name: announser
           image: quay.io/mad01/k8s-zk-announser:f594ab1d30506a75c8e035652f45773145f88944
@@ -17,3 +19,35 @@ spec:
             - "./k8s-zk-announser"
           args:
             - "-zookeeper.addr=zookeeper"
+
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: zk-announser
+  namespace: default
+rules:
+  - apiGroups: [""]
+    resources: ["services"]
+    verbs: ["get", "watch", "list"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: zk-announser
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: zk-announser
+subjects:
+  - kind: ServiceAccount
+    name: zk-announser
+    namespace: default
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  namespace: default
+  name: zk-announser
