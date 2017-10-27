@@ -7,7 +7,7 @@ WORKDIR $buildpath
 
 RUN make build/release
 
-FROM alpine:3.6
+FROM debian:8
 COPY --from=builder /usr/local/go/src/build/k8s-zk-announser/_release/k8s-zk-announser /k8s-zk-announser
 
 ENTRYPOINT ["/k8s-zk-announser"]
