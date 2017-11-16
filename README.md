@@ -11,8 +11,8 @@ the service looks for two service annotations
 ## example setup
 
 the example will result in one nginx service running with a internal elb. The service
-will be announsed in zookeeper at path `/aurora/job/role/prod/service` all members will 
-be added in to that path. as `/aurora/job/role/prod/service/member_<sequense>` and
+will be announsed in zookeeper at path `/aurora/jobs/role/prod/service` all members will 
+be added in to that path. as `/aurora/jobs/role/prod/service/member_<sequense>` and
 the port will be the service http port taken from `service.announser/portname`
 ```yaml
 ---
@@ -40,7 +40,7 @@ kind: Service
 metadata:
   name: nginx
   annotations:
-    service.announser/zookeeper-path: "/aurora/job/role/prod/service"
+    service.announser/zookeeper-path: "/aurora/jobs/role/prod/service"
     service.announser/portname: http
     service.beta.kubernetes.io/aws-load-balancer-internal: 0.0.0.0/0
 spec:
