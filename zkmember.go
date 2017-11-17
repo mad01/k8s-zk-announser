@@ -80,7 +80,7 @@ func (z *zkMember) unmarshalJSON(bytebuff []byte) (*zkMember, error) {
 }
 
 func (z *zkMember) anyEndpoints() bool {
-	if len(z.AdditionalEndpoints) >= 1 || (z.ServiceEndpoint.Host != "" && z.ServiceEndpoint.Port != 0) {
+	if len(z.AdditionalEndpoints) >= 1 && (z.ServiceEndpoint.Host != "" && z.ServiceEndpoint.Port != 0) {
 		return true
 	}
 	return false

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -14,7 +15,7 @@ func TestHaveEndpoints(t *testing.T) {
 	}{
 
 		{
-			testName: "",
+			testName: "with endpoints",
 			expected: true,
 			member: &zkMember{
 				name: "foo",
@@ -32,8 +33,8 @@ func TestHaveEndpoints(t *testing.T) {
 		},
 
 		{
-			testName: "",
-			expected: true,
+			testName: "missing service Endpoint",
+			expected: false,
 			member: &zkMember{
 				name: "foo",
 				AdditionalEndpoints: Endpoints{
@@ -46,7 +47,7 @@ func TestHaveEndpoints(t *testing.T) {
 		},
 
 		{
-			testName: "",
+			testName: "missing both service and additional endpoints",
 			expected: false,
 			member: &zkMember{
 				name:                "foo",
@@ -56,6 +57,7 @@ func TestHaveEndpoints(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		assert.Equal(t, tc.expected, tc.member.anyEndpoints(), tc.testName)
+		assert.Equal(t, tc.expected, tc.member.anyEndpoints(), tc.testName,
+			fmt.Sprintf("%#v", tc.member))
 	}
 }
