@@ -54,6 +54,12 @@ func TestHaveEndpoints(t *testing.T) {
 				AdditionalEndpoints: make(Endpoints),
 			},
 		},
+
+		{
+			testName: "missing both service and additional endpoints created with new func",
+			expected: false,
+			member:   newZKMember(),
+		},
 	}
 
 	for _, tc := range testCases {
