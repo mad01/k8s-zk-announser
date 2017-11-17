@@ -6,7 +6,7 @@ git --version 2>&1 >/dev/null # improvement by tripleee
 GIT_IS_AVAILABLE=$?
 if [ $GIT_IS_AVAILABLE -eq 0 ]; then
     # parse the current git commit hash
-    COMMIT=`git rev-parse HEAD`
+    COMMIT=`git rev-parse --short HEAD`
 
     # check if the current commit has a matching tag
     TAG=$(git describe --exact-match --abbrev=0 --tags ${COMMIT} 2> /dev/null || true)

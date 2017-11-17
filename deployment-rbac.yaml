@@ -14,7 +14,7 @@ spec:
       serviceAccount: zk-announser
       containers:
         - name: announser
-          image: quay.io/mad01/k8s-zk-announser:f594ab1d30506a75c8e035652f45773145f88944
+          image: quay.io/mad01/k8s-zk-announser:52aab4b
           command:
             - "./k8s-zk-announser"
           args:

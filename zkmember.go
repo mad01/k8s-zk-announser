@@ -49,7 +49,7 @@ type zkMember struct {
 
 	Status              string        `json:"status"` // set to ALIVE
 	AdditionalEndpoints Endpoints     `json:"additionalEndpoints"`
-	ServiceEndpoint     zkmemberUnite `json:"serviceEndpoint"`
+	ServiceEndpoint     zkMemberUnite `json:"serviceEndpoint"`
 	Shard               int           `json:"shard"`
 }
 
@@ -80,7 +80,7 @@ func (z *zkMember) unmarshalJSON(bytebuff []byte) (*zkMember, error) {
 }
 
 func (z *zkMember) anyEndpoints() bool {
-	if len(z.AdditionalEndpoints)|len(z.ServiceEndpoint) >= 1 {
+	if len(z.AdditionalEndpoints) >= 1 && (z.ServiceEndpoint.Host != "" && z.ServiceEndpoint.Port != 0) {
 		return true
 	}
 	return false
@@ -90,7 +90,6 @@ func (z *zkMember) anyEndpoints() bool {
 func newZKMember() *zkMember {
 	member := zkMember{
 		AdditionalEndpoints: make(Endpoints),
-		ServiceEndpoint:     make(Endpoints),
 		Status:              statusAlive,
 	}
 	return &member
