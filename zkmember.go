@@ -47,10 +47,10 @@ type zkMember struct {
 	path   string // zookeeper path
 	prefix string
 
-	Status              string    `json:"status"` // set to ALIVE
-	AdditionalEndpoints Endpoints `json:"additionalEndpoints"`
-	ServiceEndpoint     Endpoints `json:"serviceEndpoint"`
-	Shard               int       `json:"shard"`
+	Status              string        `json:"status"` // set to ALIVE
+	AdditionalEndpoints Endpoints     `json:"additionalEndpoints"`
+	ServiceEndpoint     zkmemberUnite `json:"serviceEndpoint"`
+	Shard               int           `json:"shard"`
 }
 
 func (z *zkMember) addAdditionalEndpoints(name, addr string, port int) {
@@ -58,7 +58,7 @@ func (z *zkMember) addAdditionalEndpoints(name, addr string, port int) {
 }
 
 func (z *zkMember) addServiceEndpoint(name, addr string, port int) {
-	z.ServiceEndpoint[name] = zkMemberUnite{Host: addr, Port: port}
+	z.ServiceEndpoint = zkMemberUnite{Host: addr, Port: port}
 	z.AdditionalEndpoints[name] = zkMemberUnite{Host: addr, Port: port}
 }
 
